@@ -1,4 +1,5 @@
 library(tidyverse)
+library(ggpubr)
 
 #Response variable: Life expectancy
 #Numerical predictor variable: Adult_Mortality
@@ -13,11 +14,15 @@ ggplot(lifeExpectancy, aes(x=Adult_Mortality, y=Life_expectancy)) +
   geom_point()
 
 #Histograms
-ggplot(lifeExpectancy, aes(x=Adult_Mortality)) +
-  geom_histogram()
+adultMortalityHist <- ggplot(lifeExpectancy, aes(x=Adult_Mortality)) +
+  geom_histogram() +
+  labs(title = "Adult Mortality", x= "Adult Deaths per 1000 people", y="")
 
-ggplot(lifeExpectancy, aes(x=Life_expectancy)) +
-  geom_histogram()
+lifeExpectancyHist <- ggplot(lifeExpectancy, aes(x=Life_expectancy)) +
+  geom_histogram() +
+  labs(title = "Life Expectancy", x="Life Expectancy (age)", y="")
+
+ggarrange(adultMortalityHist, lifeExpectancyHist)
 
 #Calculating variance of response
 responseVar <- round(var(lifeExpectancy$Life_expectancy),digits=3)
