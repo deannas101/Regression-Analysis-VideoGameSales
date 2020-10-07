@@ -11,7 +11,8 @@ lifeExpectancy <- Life_Expectancy_Data %>%
 
 ####Scatter plot####
 ggplot(lifeExpectancy, aes(x=Adult_Mortality, y=Life_expectancy)) +
-  geom_point()
+  geom_point() +
+  labs(title = "Adult Mortality versus Life Expectancy", x = "Adult Mortality", y = "Life Expectancy")
 
 ####Histograms####
 adultMortalityHist <- ggplot(lifeExpectancy, aes(x=Adult_Mortality)) +
@@ -78,7 +79,27 @@ b1.upper <- b1 + tdist*sb1
 #-0.115888 < b1 < 0.009171975
 
 ####Confidence predictor X0####
+
+x <- 200
+x.bar <- mean(lifeExpectancy$Adult_Mortality)
+yh.hat <- b0 + b1*x
+sYh <- MSE * ((1/n) + (x-x.bar)^2/Sxx)
+sEpred <- sqrt(sYh^2 + MSE)
+
+expY.lower <- yh.hat - tdist * sYh
+expY.upper <- yh.hat + tdist * sYh
+
+Ynew.lower <- yh.hat - tdist * sEpred
+Ynew.upper <- yh.hat + tdist * sEpred
+
+#Confidence interval: 67.31281 < E[Yh] < 67.38043
+#Prediction interval: 53.94196 < Ynew < 80.75127
+
 ####Plotting confidence bands####
+
+plot(lifeExpectancy$Adult_Mortality, lifeExpectancy$Life_expectancy, xlab = "Adult Mortality", 
+     ylab = "Life Expectancy", pch=19, col="gray")
+abline(regLine,lty=1,col="black")
 
 sort.X <- sort(lifeExpectancy$Adult_Mortality)
 sort.fitted.Y <- regLine$fitted.values[order(lifeExpectancy$Adult_Mortality)]
@@ -91,3 +112,18 @@ se.Y.hat <- sqrt(MSE * ((1/n) + (sort.X-mean(lifeExpectancy$Adult_Mortality))^2/
 
 upper.band <- sort.fitted.Y + W.val*se.Y.hat
 lower.band <- sort.fitted.Y - W.val*se.Y.hat
+
+lines(sort.X,upper.band,col="blue",lty=2,lwd=2); lines(sort.X,lower.band,col="blue",lty=2,lwd=2)
+
+new.X <- seq(0,750, length.out=100)
+new.Y <- b0 + b1*new.X
+
+S2.val <- 2*qf(0.95,2,n-2)
+S.val <- sqrt(S2.val)
+
+se.Y.pred.hat <- sqrt(MSE * (1 + (1/n) + (new.X-mean(lifeExpectancy$Adult_Mortality))^2/Sxx))
+
+upper.pred.band <- new.Y + S.val*se.Y.pred.hat
+lower.pred.band <- new.Y - S.val*se.Y.pred.hat
+
+lines(new.X,upper.pred.band,col="red",lty=2,lwd=2); lines(new.X,lower.pred.band,col="red",lty=2,lwd=2)
