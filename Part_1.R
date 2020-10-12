@@ -82,6 +82,7 @@ b1.upper <- b1 + tdist*sb1
 
 x <- 200
 x.bar <- mean(lifeExpectancy$Adult_Mortality)
+Sxx <- sum((sort.X-mean(sort.X))^2)
 yh.hat <- b0 + b1*x
 sYh <- MSE * ((1/n) + (x-x.bar)^2/Sxx)
 sEpred <- sqrt(sYh^2 + MSE)
