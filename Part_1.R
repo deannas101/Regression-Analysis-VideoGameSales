@@ -128,3 +128,7 @@ upper.pred.band <- new.Y + S.val*se.Y.pred.hat
 lower.pred.band <- new.Y - S.val*se.Y.pred.hat
 
 lines(new.X,upper.pred.band,col="red",lty=2,lwd=2); lines(new.X,lower.pred.band,col="red",lty=2,lwd=2)
+
+####standard error####
+St_error_b0 = var(lifeExpectancy$Life_expectancy)/length(lifeExpectancy$Life_expectancy)
+St_error_b1 = var(lifeExpectancy$Adult_Mortality)/length(lifeExpectancy$Adult_Mortality)
