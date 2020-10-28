@@ -5,6 +5,9 @@ library(tidyverse)
 
 #dataset name: Life_Expectancy_Data
 
+#temp stuff
+tmp <- as.data.frame(fullMatrix)
+regMat <- lm(Y ~ X1+X2+X3, tmp)
 
 #use tidyverse to remove missing values from data
 lifeExpectancy <- Life_Expectancy_Data %>%
@@ -51,4 +54,35 @@ res <- (I-H)%*%Y
 Y.hat <- X%*%b 
 
 ####MSE####
+
+MSE <- sum((Y-Y.hat)^2)/2481
+#MSE <- t(Y)%*%(I-H)%*%Y/(n-2)
+MSE
+
+####R2 and adjusted R2####
+
+Y.bar <- mean(Y)
+SSE <- sum((Y-Y.hat)^2)
+SSR <- sum((Y.bar-Y.hat)^2)
+SSTO <- sum((Y-Y.bar)^2)
+
+R2 <- SSR/SSTO
+adjR2 <- 1-(2484/2481)*(SSE/SSTO)
+
+R2
+adjR2
+
+####F-test####
+
+MSR <- SSR/3
+F.test <- MSR/MSE
+Fdist <- qf(0.95, 3, 2481)
+F.test>Fdist
+#reject H0
+
+##NOT WORKING
+pval <- pf(F.test, 3, 2481)
+pval
+
+####covariance matrix b.hat####
 
