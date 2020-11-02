@@ -5,10 +5,6 @@ library(tidyverse)
 
 #dataset name: Life_Expectancy_Data
 
-#temp stuff
-tmp <- as.data.frame(fullMatrix)
-regMat <- lm(Y ~ X1+X2+X3, tmp)
-
 #use tidyverse to remove missing values from data
 lifeExpectancy <- Life_Expectancy_Data %>%
   select(c(Life_expectancy, GDP, infant_deaths, Measles)) %>%
@@ -81,8 +77,26 @@ F.test>Fdist
 #reject H0
 
 ##NOT WORKING
-pval <- pf(F.test, 3, 2481)
+pval <- pf(0.025, 3, 2481)
 pval
 
 ####covariance matrix b.hat####
 
+#C = (X^t X)^-1
+
+####hypothesis tests####
+
+XtX <- t(X)%*%X
+var.b <- MSE*solve(XtX)
+s.b <- sqrt(diag(var.b))
+t.values <- b/s.b
+t.values
+
+#need p-vals
+
+####Xhs matrix####
+
+####hypothesis tests with lm####
+
+tmp <- as.data.frame(fullMatrix)
+regMat <- lm(Y ~ X1+X2+X3, tmp)
