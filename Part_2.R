@@ -138,12 +138,13 @@ lmFit_y1 <- lm(Y ~ X1, dfFull)
 lmFit_y2 <- lm(Y ~ X2, dfFull)
 lmFit_y3 <- lm(Y ~ X3, dfFull)
 
-lmFit
 anova(lmFit)
-lmFit_y1
 anova(lmFit_y1)
-lmFit_y2
 anova(lmFit_y2)
-lmFit_y3
 anova(lmFit_y3)
 
+
+
+#1st bullet: f-test for each option, use sse class 20
+#2nd bullet: t-test by hand see hw 2
+#3rd bullet: slide 36 class 20, lm(y~ Xc+x3) where Xc = x1+x2
