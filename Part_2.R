@@ -138,13 +138,46 @@ lmFit_y1 <- lm(Y ~ X1, dfFull)
 lmFit_y2 <- lm(Y ~ X2, dfFull)
 lmFit_y3 <- lm(Y ~ X3, dfFull)
 
-anova(lmFit)
-anova(lmFit_y1)
-anova(lmFit_y2)
-anova(lmFit_y3)
+#1st bullet
 
+anova(lmFit) #SSE = 177141 df = 2481
+anova(lmFit_y1) #SSE = 181906 df = 2483
+anova(lmFit_y2) #SSE = 223285 df = 2483
+anova(lmFit_y3) #SSE = 226119 df = 2483
 
+#p-1 = 3
+#n-p = 2481
 
-#1st bullet: f-test for each option, use sse class 20
+#X1=X3=0
+F.test <- ((181906-177141)/(2483-2481))/(177141/2481)
+F.test>Fdist
+#reject H0
+pval <- pf(F.test, 3, 2481, lower.tail = FALSE)
+pval
+
+#X2=X3=0
+F.test <- ((223285-177141)/(2483-2481))/(177141/2481)
+F.test>Fdist
+#reject H0
+pval <- pf(F.test, 3, 2481, lower.tail = FALSE)
+pval
+
+#X1=X2=0
+F.test <- ((226119-177141)/(2483-2481))/(177141/2481)
+F.test>Fdist
+#reject H0
+pval <- pf(F.test, 3, 2481, lower.tail = FALSE)
+pval
+
 #2nd bullet: t-test by hand see hw 2
+
+#H0: X1 = 1, Ha: X1 != 1, alpha = 0.05
+t.star <- (3.009e-04 - 1)/sqrt(1.194e-05)
+t.dist <- qt(0.975, n-2)
+t.star > t.dist
+#fail to reject H0
+pval <- pt(t.star, n-2)
+pval
+
 #3rd bullet: slide 36 class 20, lm(y~ Xc+x3) where Xc = x1+x2
+lmFit_Xc <- lm(Y ~ I(X1+X2)+X3, dfFull)
