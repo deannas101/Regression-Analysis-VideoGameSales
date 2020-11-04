@@ -175,6 +175,7 @@ pval
 #it could potentially be close to 1
 
 #H0: X1 = 1, Ha: X1 != 1, alpha = 0.05
+#values taken from summary(lmFit)
 t.star <- (3.009e-04 - 1)/sqrt(1.194e-05)
 t.dist <- qt(0.975, n-2)
 t.star > t.dist
@@ -182,6 +183,15 @@ t.star > t.dist
 pval <- pt(t.star, n-2)
 pval
 
-#3rd bullet: slide 36 class 20, lm(y~ Xc+x3) where Xc = x1+x2
+#3rd bullet
 lmFit_Xc <- lm(Y ~ I(X1+X2)+X3, dfFull)
 summary(lmFit_Xc)
+summary(lmFit)
+
+#H0: X2 = X3, Ha: X2 != X3, alpha = 0.05
+t.star <- (-8.035e-03 + 5.038e-05)/sqrt(1.574e-03)
+t.dist <- qt(0.975, n-2)
+t.star > t.dist
+#Fail to reject H0
+pval <- pt(t.star, n-2)
+pval
