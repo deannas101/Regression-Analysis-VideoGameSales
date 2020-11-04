@@ -76,15 +76,18 @@ Fdist <- qf(0.95, 3, 2481)
 F.test>Fdist
 #reject H0
 
-##NOT WORKING
-pval <- pf(0.025, 3, 2481)
+pval <- pf(F.test, 3, 2481, lower.tail = FALSE)
 pval
 
 ####covariance matrix b.hat####
 
-#C = (X^t X)^-1
+bCov <- cov(fullMatrix)
 
-####hypothesis tests####
+s.b <- sqrt(diag(bCov))
+t.stat <- b/s.b
+stnd.error <- b/t.stat
+
+####hypothesis tests of coefficients####
 
 XtX <- t(X)%*%X
 var.b <- MSE*solve(XtX)
@@ -92,11 +95,55 @@ s.b <- sqrt(diag(var.b))
 t.values <- b/s.b
 t.values
 
-#need p-vals
+p.values <- pt(t.values, 3)
+p.values
 
 ####Xhs matrix####
 
+Xh <- matrix(X[5,], ncol=1)
+Y.hat <- t(Xh)%*%b
+s.Y.hat <- sqrt(MSE*(t(Xh)%*%solve(XtX)%*%Xh))
+lower.CI.mean <- Y.hat - qt(0.975, 76)*s.Y.hat 
+upper.CI.mean <- Y.hat + qt(0.975, 76)*s.Y.hat
+
+Xh.mat <- matrix(t(X[c(5,500, 1000, 1020, 2000),]), ncol=5)
+Y.hat <- t(Xh.mat)%*%b
+
+#Working-Hotelling
+
+n <- nrow(lifeExpectancy)
+p <- nrow(Xh.mat)
+s.Y.hat <- sqrt(MSE*diag(t(Xh.mat)%*%solve(XtX)%*%Xh.mat))
+
+W2.val <- p*qf(0.95,p,n-p) 
+W.val <- sqrt(W2.val)
+
+lower.CB <- Y.hat - W.val*s.Y.hat
+upper.CB <- Y.hat + W.val*s.Y.hat
+
+#Bonferroni
+
+g <- ncol(Xh.mat)
+conf.level <- 1-(0.05/(2*g))
+B.val <- qt(conf.level,n-p) 
+
+lower.CB <- Y.hat - B.val*s.Y.hat
+upper.CB <- Y.hat + B.val*s.Y.hat
+
 ####hypothesis tests with lm####
 
-tmp <- as.data.frame(fullMatrix)
-regMat <- lm(Y ~ X1+X2+X3, tmp)
+dfFull <- as.data.frame(fullMatrix)
+lmFit <- lm(Y ~ X1+X2+X3, dfFull)
+lmFit_y1 <- lm(Y ~ X1, dfFull)
+lmFit_y2 <- lm(Y ~ X2, dfFull)
+lmFit_y3 <- lm(Y ~ X3, dfFull)
+
+lmFit
+anova(lmFit)
+lmFit_y1
+anova(lmFit_y1)
+lmFit_y2
+anova(lmFit_y2)
+lmFit_y3
+anova(lmFit_y3)
+
