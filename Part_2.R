@@ -169,7 +169,10 @@ F.test>Fdist
 pval <- pf(F.test, 3, 2481, lower.tail = FALSE)
 pval
 
-#2nd bullet: t-test by hand see hw 2
+#2nd bullet
+
+#b1 is estimated to be closer to 0 than 1, but I wanted to see if
+#it could potentially be close to 1
 
 #H0: X1 = 1, Ha: X1 != 1, alpha = 0.05
 t.star <- (3.009e-04 - 1)/sqrt(1.194e-05)
@@ -181,3 +184,4 @@ pval
 
 #3rd bullet: slide 36 class 20, lm(y~ Xc+x3) where Xc = x1+x2
 lmFit_Xc <- lm(Y ~ I(X1+X2)+X3, dfFull)
+summary(lmFit_Xc)
