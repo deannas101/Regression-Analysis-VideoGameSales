@@ -65,13 +65,13 @@ ols_plot_dfbetas(lmfit)
 #BP and BF test
 bptest(lmfit)
 
-#BF Test - does each individual predictor need to be tested??
-mean.life <- mean(red_data[,-1])
-
-sort.life <- sort(red_data[,-1])
-order.life <- order(red_data[,-1])
-
 lm.res <- resid(lmfit)
+
+#BF Test - Adult_Mortality
+mean.life <- mean(red_data$Adult_Mortality)
+
+sort.life <- sort(red_data$Adult_Mortality)
+order.life <- order(red_data$Adult_Mortality)
 
 sort.res <- lm.res[order.life]
 
@@ -79,7 +79,73 @@ group1.index <- which((sort.life < mean.life)|(sort.life ==mean.life))
 group1 <- sort.life[group1.index]
 
 group2.index <- which((sort.life > mean.life))  
-group2 <- sort.[group2.index]
+group2 <- sort.life[group2.index]
+
+group1.res <- sort.res[group1.index]
+group2.res <- sort.res[group2.index]
+
+d1 <- abs(group1.res - median(group1.res))
+d2 <- abs(group2.res - median(group2.res))
+
+t.test(d1,d2)
+
+#BF Test - Alcohol
+mean.life <- mean(red_data$Alcohol)
+
+sort.life <- sort(red_data$Alcohol)
+order.life <- order(red_data$Alcohol)
+
+sort.res <- lm.res[order.life]
+
+group1.index <- which((sort.life < mean.life)|(sort.life ==mean.life))  
+group1 <- sort.life[group1.index]
+
+group2.index <- which((sort.life > mean.life))  
+group2 <- sort.life[group2.index]
+
+group1.res <- sort.res[group1.index]
+group2.res <- sort.res[group2.index]
+
+d1 <- abs(group1.res - median(group1.res))
+d2 <- abs(group2.res - median(group2.res))
+
+t.test(d1,d2)
+
+#BF Test - Hepatitis_B
+mean.life <- mean(red_data$Hepatitis_B)
+
+sort.life <- sort(red_data$Hepatitis_B)
+order.life <- order(red_data$Hepatitis_B)
+
+sort.res <- lm.res[order.life]
+
+group1.index <- which((sort.life < mean.life)|(sort.life ==mean.life))  
+group1 <- sort.life[group1.index]
+
+group2.index <- which((sort.life > mean.life))  
+group2 <- sort.life[group2.index]
+
+group1.res <- sort.res[group1.index]
+group2.res <- sort.res[group2.index]
+
+d1 <- abs(group1.res - median(group1.res))
+d2 <- abs(group2.res - median(group2.res))
+
+t.test(d1,d2)
+
+#BF Test - Measles
+mean.life <- mean(red_data$Measles)
+
+sort.life <- sort(red_data$Measles)
+order.life <- order(red_data$Measles)
+
+sort.res <- lm.res[order.life]
+
+group1.index <- which((sort.life < mean.life)|(sort.life ==mean.life))  
+group1 <- sort.life[group1.index]
+
+group2.index <- which((sort.life > mean.life))  
+group2 <- sort.life[group2.index]
 
 group1.res <- sort.res[group1.index]
 group2.res <- sort.res[group2.index]
@@ -90,4 +156,4 @@ d2 <- abs(group2.res - median(group2.res))
 t.test(d1,d2)
 
 ####11####
-shapiro.test(resid(lmfit))
+shapiro.test(lm.res)
