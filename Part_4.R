@@ -1,4 +1,4 @@
-
+library(caret)
 
 # Re-creating data set with interaction terms ---------------------------------
 
@@ -12,6 +12,10 @@ exp_data$V4 <- Life_Expectancy_Data$Diphtheria
 colnames(exp_data) <- c(
   "Y", "X1", "X2", "X3", "X4", "X5", "X6"
 )
+
+# imputing missing values
+process <- preProcess(exp_data, method = "knnImpute")
+exp_data <- predict(process, exp_data)
 
 X1X2 <- exp_data$X1 * exp_data$X2
 X1X3 <- exp_data$X1 * exp_data$X3
@@ -38,3 +42,4 @@ exp_data <- cbind(
   X3X5, X3X6, X4X5, X4X6, X5X6
 )
 
+cor(exp_data)
