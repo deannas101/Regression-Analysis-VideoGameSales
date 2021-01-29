@@ -21,6 +21,7 @@ colnames(exp_data) <- c(
 process <- preProcess(exp_data, method = "knnImpute")
 exp_data <- predict(process, exp_data)
 
+# creating interaction terms
 X1X2 <- exp_data$X1 * exp_data$X2
 X1X3 <- exp_data$X1 * exp_data$X3
 X1X4 <- exp_data$X1 * exp_data$X4
